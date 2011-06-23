@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI="4"
+EAPI=4
 
 inherit eutils qt4-r2 toolchain-funcs
 
@@ -18,7 +18,7 @@ DESCRIPTION="A better i7 (and now i3, i5) reporting tool for Linux"
 HOMEPAGE="http://code.google.com/p/i7z/"
 
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS=""
 LICENSE="GPL-2"
 IUSE="X"
 
