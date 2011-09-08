@@ -23,6 +23,7 @@ src_prepare() {
 	MY_S="$PN"
 	cd ${PN}
 	sed -i wuala -e 's|loader3\.jar|/opt/wuala/loader3.jar|'
+	sed -i wualacmd -e 's|\./wuala|/opt/bin/wuala|'
 }
 
 src_install() {
