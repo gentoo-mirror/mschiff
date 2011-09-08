@@ -6,7 +6,7 @@ EAPI=4
 
 DESCRIPTION="Wuala, your free online hard-disk"
 HOMEPAGE="http://wuala.com/"
-SRC_URI="http://www.wuala.com/files/wuala.tar.gz"
+SRC_URI="http://cdn.wuala.com/repo/other/wuala.tar.gz"
 
 LICENSE="wuala"
 SLOT="0"
