@@ -15,8 +15,7 @@ IUSE=""
 
 DEPEND=""
 RDEPEND="sys-fs/fuse
-	>=virtual/jre-1.5.0
-	x11-misc/xdg-utils"
+	>=virtual/jre-1.5.0"
 
 S="${WORKDIR}/${PN}"
 
