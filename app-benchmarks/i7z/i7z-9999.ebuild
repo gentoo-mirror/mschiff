@@ -28,7 +28,7 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 
 src_prepare() {
-	epatch "${FILESDIR}"/0.26-gentoo.patch
+	epatch "${FILESDIR}"/svn-78-gentoo.patch
 	tc-export CC
 }
 
