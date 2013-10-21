@@ -361,7 +361,7 @@ pkg_postinst() {
 		einfo
 		einfo "If this is a new install, you must create the databases with:"
 		einfo
-		if use postgresql; then
+		if use postgres; then
 			einfo "For postgresql:"
 			einfo "  su postgres -c '/usr/libexec/bareos/create_bareos_database postgresql'"
 			einfo "  su postgres -c '/usr/libexec/bareos/make_bareos_tables postgresql'"
