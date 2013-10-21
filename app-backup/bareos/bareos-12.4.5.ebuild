@@ -9,9 +9,6 @@ PYTHON_REQ_USE="threads"
 
 inherit eutils multilib python-single-r1 qt4-r2 user
 
-#MY_PV=${PV/_beta/-b}
-#MY_P=${PN}-${MY_PV}
-
 DESCRIPTION="Featureful client/server network backup suite"
 HOMEPAGE="http://www.bareos.org/"
 SRC_URI="https://github.com/${PN}/${PN}/archive/Release/${PV}.tar.gz -> ${P}.tar.gz"
@@ -64,14 +61,12 @@ RDEPEND="${DEPEND}
 	)
 	vim-syntax? ( || ( app-editors/vim app-editors/gvim ) )"
 
-#REQUIRED_USE="|| ( ^^ ( mysql postgres sqlite3 ) clientonly )
 REQUIRED_USE="static? ( clientonly )
-				python? ( ${PYTHON_REQUIRED_USE} )"
+	python? ( ${PYTHON_REQUIRED_USE} )"
 
 S=${WORKDIR}/${PN}-Release-${PV}
 
 pkg_setup() {
-	#XOR and !clientonly controlled by REQUIRED_USE
 	use mysql && export mydbtypes+="mysql"
 	use postgres && export mydbtypes+=" postgresql"
 	use sqlite3 && export mydbtypes+=" sqlite3"
@@ -117,9 +112,6 @@ src_prepare() {
 	done
 	popd >&/dev/null || die
 
-	# bug 466688 drop deprecated categories from Desktop file
-	sed -i -e 's/Application;//' src/qt-console/bat.desktop.in || die
-
 	# bug 466690 Use CXXFLAGS instead of CFLAGS
 	sed -i -e 's/@CFLAGS@/@CXXFLAGS@/' autoconf/Make.common.in || die
 
@@ -133,9 +125,6 @@ src_prepare() {
 	for d in filed console dird stored; do
 		sed -i -e "s/strip /# strip /" src/$d/Makefile.in || die
 	done
-
-	# fix file not found error during make depend
-	#epatch "${FILESDIR}"/5.2.12/${PN}-5.2.12-depend.patch
 }
 
 src_configure() {
@@ -149,7 +138,7 @@ src_configure() {
 			$(use_enable static static-fd)"
 	fi
 
-	# do not build bat if 'static' clientonly
+	# do not build bat and traymonitor if 'static' clientonly
 	if ! use clientonly || ! use static; then
 		myconf="${myconf} \
 			$(use_enable qt4 bat) \
@@ -201,6 +190,9 @@ src_configure() {
 	# correct configuration for QT based bat
 	if use qt4 ; then
 		pushd src/qt-console
+		eqmake4
+		popd
+		pushd src/qt-tray-monitor
 		eqmake4
 		popd
 	fi
@@ -356,9 +348,6 @@ src_install() {
 
 	# make sure bareos group can execute bareos libexec scripts
 	fowners -R root:bareos /usr/libexec/bareos
-
-	# make sure bareos group can execute bareos programs
-	# TBD
 }
 
 pkg_postinst() {
@@ -371,18 +360,36 @@ pkg_postinst() {
 	if ! use clientonly && use director; then
 		einfo
 		einfo "If this is a new install, you must create the databases with:"
-		einfo "  /usr/libexec/bareos/create_bareos_database <dbtype>"
-		einfo "  /usr/libexec/bareos/make_bareos_tables <dbtype>"
-		einfo "  /usr/libexec/bareos/grant_bareos_privileges <dbtype>"
 		einfo
-		einfo "where <dbtype> is one sqlite3, mysql or postgresql"
+		if use postgresql; then
+			einfo "For postgresql:"
+			einfo "  su postgres -c '/usr/libexec/bareos/create_bareos_database postgresql'"
+			einfo "  su postgres -c '/usr/libexec/bareos/make_bareos_tables postgresql'"
+			einfo "  su postgres -c '/usr/libexec/bareos/grant_bareos_privileges postgresql'"
+		fi
+		if use mysql; then
+			einfo "For mysql:"
+			einfo
+			einfo "  Make sure root has direct access to your mysql server. You may want to"
+			einfo "  create a /root/.my.cnf file with"
+			einfo "    [client]"
+			einfo "    user=root"
+			einfo "    password=YourPasswordForAccessingMysqlAsRoot"
+			einfo "  before running:"
+			einfo "  /usr/libexec/bareos/create_bareos_database mysql"
+			einfo "  /usr/libexec/bareos/make_bareos_tables mysql"
+			einfo "  /usr/libexec/bareos/grant_bareos_privileges mysql"
+		fi
 		einfo
 	fi
 
 	if use sqlite3; then
 		einfo
-		einfo "Be aware that Bareos does not officially support SQLite database anymore."
+		einfo "Be aware that Bareos does not officially support SQLite database."
 		einfo "Best use it only for a client-only installation. See Bug #445540."
+		einfo
+		einfo "It is strongly recommended to use either postgresql or mysql as"
+		einfo "catalog database backend."
 		einfo
 	fi
 
