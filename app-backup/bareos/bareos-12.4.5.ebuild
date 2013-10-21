@@ -19,9 +19,9 @@ SRC_URI="https://github.com/${PN}/${PN}/archive/Release/${PV}.tar.gz -> ${P}.tar
 LICENSE="AGPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="acl clientonly +director dynamic-cats-backends examples ipv6 logwatch mysql
-		ndmp postgres python qt4 readline scsi-crypto sql-pooling +sqlite3 ssl static
-		+storage-daemon tcpd vim-syntax X"
+IUSE="acl clientonly +director examples ipv6 logwatch mysql ndmp postgres python qt4
+		readline scsi-crypto sql-pooling +sqlite3 ssl static +storage-daemon tcpd
+		vim-syntax X"
 
 DEPEND="
 	!app-backup/bacula
@@ -64,17 +64,17 @@ RDEPEND="${DEPEND}
 	)
 	vim-syntax? ( || ( app-editors/vim app-editors/gvim ) )"
 
-REQUIRED_USE="|| ( ^^ ( mysql postgres sqlite3 ) clientonly )
-				static? ( clientonly )
+#REQUIRED_USE="|| ( ^^ ( mysql postgres sqlite3 ) clientonly )
+REQUIRED_USE="static? ( clientonly )
 				python? ( ${PYTHON_REQUIRED_USE} )"
 
 S=${WORKDIR}/${PN}-Release-${PV}
 
 pkg_setup() {
 	#XOR and !clientonly controlled by REQUIRED_USE
-	use mysql && export mydbtype="mysql"
-	use postgres && export mydbtype="postgresql"
-	use sqlite3 && export mydbtype="sqlite3"
+	use mysql && export mydbtypes+="mysql"
+	use postgres && export mydbtypes+=" postgresql"
+	use sqlite3 && export mydbtypes+=" sqlite3"
 
 	# create the daemon group and user
 	if [ -z "$(egetent group bareos 2>/dev/null)" ]; then
@@ -147,16 +147,6 @@ src_configure() {
 			$(use_enable !static libtool) \
 			$(use_enable static static-cons) \
 			$(use_enable static static-fd)"
-	else
-		myconf="${myconf} \
-			$(use_enable director build-dird) \
-			$(use_enable storage-daemon build-stored)"
-		# bug #311099
-		# database support needed by dir-only *and* sd-only
-		# build as well (for building bscan, btape, etc.)
-		myconf="${myconf} \
-			--with-${mydbtype} \
-			--enable-batch-insert"
 	fi
 
 	# do not build bat if 'static' clientonly
@@ -168,18 +158,21 @@ src_configure() {
 
 	myconf="${myconf} \
 		$(use_with X x) \
-		$(use_with python) \
-		$(use_enable !readline conio) \
-		$(use_enable readline) \
-		$(use_with readline readline /usr) \
-		$(use_with ssl openssl) \
-		$(use_enable ipv6) \
 		$(use_enable acl) \
-		$(use_with tcpd tcp-wrappers) \
-		$(use_enable dynamic-cats-backends) \
+		$(use_enable ipv6) \
+		$(use_enable ndmp) \
+		$(use_enable readline) \
+		$(use_enable !readline conio) \
 		$(use_enable scsi-crypto) \
 		$(use_enable sql-pooling) \
-		$(use_enable ndmp)"
+		$(use_with mysql) \
+		$(use_with postgres postgresql) \
+		$(use_with python) \
+		$(use_with readline readline /usr) \
+		$(use_with sqlite3) \
+		$(use_with ssl openssl) \
+		$(use_with tcpd tcp-wrappers) \
+		"
 
 	econf \
 		--libdir=/usr/$(get_libdir) \
@@ -200,6 +193,8 @@ src_configure() {
 		--with-fd-group=bareos \
 		--with-sbin-perm=0755 \
 		--enable-smartalloc \
+		--enable-dynamic-cats-backends \
+		--enable-batch-insert \
 		--disable-afs \
 		--host=${CHOST} \
 		${myconf}
@@ -248,13 +243,6 @@ src_install() {
 
 	# extra files which 'make install' doesn't cover
 	if ! use clientonly; then
-	    # the database update scripts
-		#diropts -m0750
-		#insinto /usr/libexec/bareos/cats
-		#insopts -m0754
-		#doins "${S}"/src/cats/*
-		#fperms 0640 /usr/libexec/bareos/cats/README
-
 		# the logrotate configuration
 		# (now unconditional wrt bug #258187)
 		diropts -m0755
@@ -279,7 +267,6 @@ src_install() {
 	if ! use qt4; then
 		rm -vf "${D}"/usr/share/man/man1/bat.1*
 	fi
-	#rm -vf "${D}"/usr/share/man/man1/bareos-tray-monitor.1*
 	if use clientonly || ! use director; then
 		rm -vf "${D}"/usr/share/man/man8/bareos-dir.8*
 		rm -vf "${D}"/usr/share/man/man8/bareos-dbcheck.8*
@@ -315,7 +302,7 @@ src_install() {
 	fi
 
 	# documentation
-	#dodoc ChangeLog ReleaseNotes SUPPORT technotes
+	dodoc README.md
 	use ndmp && dodoc README.NDMP
 	use scsi-crypto && dodoc README.scsicrypto
 
@@ -352,16 +339,7 @@ src_install() {
 		# now set the database dependency for the director init script
 		case "${script}" in
 			bareos-dir)
-				case "${mydbtype}" in
-					sqlite3)
-						# sqlite3 databases don't have a daemon
-						sed -i -e 's/need "%database%"/:/g' "${T}/${script}".initd || die
-						;;
-					*)
-						# all other databases have daemons
-						sed -i -e "s:%database%:${mydbtype}:" "${T}/${script}".initd || die
-						;;
-				esac
+				sed -i -e "s:%databasetypes%:${mydbtypes}:" "${T}/${script}".confd || die
 				;;
 			*)
 				;;
@@ -392,10 +370,12 @@ pkg_postinst() {
 
 	if ! use clientonly && use director; then
 		einfo
-		einfo "If this is a new install, you must create the ${mydbtype} databases with:"
-		einfo "  /usr/libexec/bareos/create_${mydbtype}_database"
-		einfo "  /usr/libexec/bareos/make_${mydbtype}_tables"
-		einfo "  /usr/libexec/bareos/grant_${mydbtype}_privileges"
+		einfo "If this is a new install, you must create the databases with:"
+		einfo "  /usr/libexec/bareos/create_bareos_database <dbtype>"
+		einfo "  /usr/libexec/bareos/make_bareos_tables <dbtype>"
+		einfo "  /usr/libexec/bareos/grant_bareos_privileges <dbtype>"
+		einfo
+		einfo "where <dbtype> is one sqlite3, mysql or postgresql"
 		einfo
 	fi
 

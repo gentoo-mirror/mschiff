@@ -4,11 +4,12 @@
 
 # Config file for /etc/init.d/bareos-dir
 
-# If the database server where you store your bareos catalog
-# is on a different machine, please set this to 0.
-# Setting it to 1 makes bareos-dir depend on the corresponding
-# database service selected at package compile time.
-LOCAL_DB=1
+# Bareos can use more than one catalog database and each one can 
+# be of any supported type.
+# If a database server where you store a bareos catalog
+# is on a different machine, you might want to remove the corresponding
+# type from the rc_need variable.
+rc_need="%databasetypes%"
 
 # Options for the director daemon.
 # The director can be run as a non-root user, however

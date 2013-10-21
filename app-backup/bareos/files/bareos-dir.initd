@@ -5,9 +5,6 @@
 
 depend() {
 	need net
-	if [ "${LOCAL_DB}" -eq 1 ]; then
-		need "%database%"
-	fi
 	use dns bareos-fd bareos-sd
 }
 

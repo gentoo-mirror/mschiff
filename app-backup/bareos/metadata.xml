@@ -12,7 +12,6 @@
 		<flag name='storage-daemon'>Install storage daemon (bareos-sd)</flag>
 		<flag name='logwatch'>Install support files for logwatch</flag>
 		<flag name='ndmp'>Enable support for NDMP (Network Data Management Protocol)</flag>
-		<flag name='dynamic-cats-backends'>Support dynamic loading of catalog backends</flag>
 		<flag name='sql-pooling'>Enable SQL pooling support</flag>
 		<flag name='scsi-crypto'>Enable low level SCSI crypto support</flag>
 	</use>
