@@ -360,14 +360,15 @@ pkg_postinst() {
 	if ! use clientonly && use director; then
 		einfo
 		einfo "If this is a new install, you must create the databases with:"
-		einfo
 		if use postgres; then
+			einfo
 			einfo "For postgresql:"
 			einfo "  su postgres -c '/usr/libexec/bareos/create_bareos_database postgresql'"
 			einfo "  su postgres -c '/usr/libexec/bareos/make_bareos_tables postgresql'"
 			einfo "  su postgres -c '/usr/libexec/bareos/grant_bareos_privileges postgresql'"
 		fi
 		if use mysql; then
+			einfo
 			einfo "For mysql:"
 			einfo
 			einfo "  Make sure root has direct access to your mysql server. You may want to"
