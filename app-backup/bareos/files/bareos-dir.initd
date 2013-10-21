@@ -17,6 +17,6 @@ start() {
 
 stop() {
 	ebegin "Stopping bareos director"
-	start-stop-daemon --stop --quiet --pidfile /var/run/bareos-dir.*.pid
+	start-stop-daemon --stop --quiet --pidfile /run/bareos-dir.*.pid
 	eend $?
 }
