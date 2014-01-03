@@ -30,7 +30,10 @@ RDEPEND="
 	tools? ( net-dns/bind-tools net-misc/wget )
 	"
 
-PATCHES=( "$FILESDIR/automx-memcache-optional.patch" )
+PATCHES=( 
+	"$FILESDIR/${PN}-memcache-optional.patch" 
+	"$FILESDIR/${PN}-add-missing-memcache-exception.patch"
+	)
 S="${WORKDIR}/${PN}-0.10.0"
 
 #src_prepare() {
