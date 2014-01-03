@@ -1,0 +1,14 @@
+diff --git a/src/automx/config.py b/src/automx/config.py
+index 4839b17..0d77595 100644
+--- a/src/automx/config.py
++++ b/src/automx/config.py
+@@ -849,6 +849,9 @@ class Memcache(object):
+         except ValueError, e:
+             logging.warning("Memcache misconfigured: ", e)
+             self.__has_memcache = False
++        except NoOptionError:
++            logging.warning("Not using Memcache")
++            self.__has_memcache = False
+ 
+     def counter(self):
+         return self.__current
