@@ -13,8 +13,11 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-DEPEND="dev-perl/IO-Socket-SSL"
-RDEPEND="${DEPEND}"
+DEPEND=""
+RDEPEND="
+	dev-perl/IO-Socket-SSL
+	net-mail/dovecot
+	"
 
 src_install() {
 	exeinto /usr/bin
