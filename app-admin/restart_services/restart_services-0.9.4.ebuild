@@ -22,5 +22,5 @@ src_install() {
 	doman restart_services.1
 	insinto /etc
 	doins restart_services.conf
-	dodoc README
+	dodoc README CHANGES
 }
