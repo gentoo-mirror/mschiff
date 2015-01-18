@@ -4,7 +4,7 @@
 
 EAPI=5
 
-DESCRIPTION="Utility to restart services after updating"
+DESCRIPTION="Utility to manage OpenRC services that need to be restarted"
 HOMEPAGE="http://dev.gentoo.org/~mschiff/src/restart_services"
 SRC_URI="http://dev.gentoo.org/~mschiff/src/${PN}/${P}.tgz"
 
