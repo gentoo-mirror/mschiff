@@ -1,3 +1,4 @@
 app-admin/restart_services 0.9.6: Utility to manage OpenRC services that need to be restarted
 app-pda/gcaldaemon 1.0_beta16: Offers two-way synchronization between Google Calendar and other iCal compatible calendar apps
 net-misc/dnssec-trigger 9999: A tool to configure unbound with usable DNSSEC servers.
+sys-fs/lvm2 2.02.166-r1: User-land utilities for LVM2 (device-mapper) software
