@@ -82,8 +82,11 @@ src_install() {
 	insopts -m0640 -oroot -gcouchdb
 	doins "${FILESDIR}/10_gentoo.ini"
 
-	newinitd "${FILESDIR}/couchdb.init-2.1.0" couchdb
-	newconfd "${FILESDIR}/couchdb.conf-2.1.0" couchdb
+	insinto /etc/logrotate.d/
+	newins "${FILESDIR}/${PN}.logrotate" "${PN}"
+
+	newinitd "${FILESDIR}/${PN}.init-2.1.0" "${PN}"
+	newconfd "${FILESDIR}/${PN}.conf-2.1.0" "${PN}"
 
 	rm "${ED}/opt/couchdb/bin/couchdb.cmd"
 
