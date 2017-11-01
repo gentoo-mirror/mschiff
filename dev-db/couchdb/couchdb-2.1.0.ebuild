@@ -57,6 +57,8 @@ src_test() {
 src_install() {
 	mkdir -p "${D}/opt"
 	cp -a "${S}/rel/couchdb" "${D}/opt/"
+	mv "${D}/opt/couchdb/etc" "${D}/etc/"
+	dosym ../../etc/couchdb /opt/couchdb/etc 
 
 	keepdir /var/l{ib,og}/couchdb
 
@@ -80,8 +82,6 @@ src_install() {
 	insopts -m0640 -oroot -gcouchdb
 	doins "${FILESDIR}/10_gentoo.ini"
 
-	# link etc dir for to /etc for convenience
-	dosym ../opt/couchdb/etc /etc/couchdb
 
 	newinitd "${FILESDIR}/couchdb.init-2.1.0" couchdb
 	newconfd "${FILESDIR}/couchdb.conf-2.1.0" couchdb
