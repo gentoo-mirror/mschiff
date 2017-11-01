@@ -66,11 +66,11 @@ src_install() {
 		/var/lib/couchdb \
 		/var/log/couchdb
 
-	for f in "${ED}"/opt/couchdb/etc/*.d; do
+	for f in "${ED}"/etc/couchdb/*.d; do
 		fowners root:couchdb "${f#${ED}}"
 		fperms 0750 "${f#${ED}}"
 	done
-	for f in "${ED}"/opt/couchdb/etc/*.ini; do
+	for f in "${ED}"/etc/couchdb/*.ini; do
 		fowners root:couchdb "${f#${ED}}"
 		fperms 0440 "${f#${ED}}"
 	done
@@ -78,7 +78,7 @@ src_install() {
 	fowners couchdb:couchdb "/opt/couchdb/etc/local.ini"
 	fperms  0640 "/opt/couchdb/etc/local.ini"
 
-	insinto /opt/couchdb/etc/default.d
+	insinto /etc/couchdb/default.d
 	insopts -m0640 -oroot -gcouchdb
 	doins "${FILESDIR}/10_gentoo.ini"
 
