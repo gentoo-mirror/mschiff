@@ -42,7 +42,6 @@ pkg_setup() {
 src_configure() {
 	econf \
 		--with-erlang="${EPREFIX}"/usr/$(get_libdir)/erlang/usr/include \
-		--with-js-lib="${EPREFIX}"/usr/$(get_libdir) \
 		--with-curl \
 		--user=couchdb
 }
@@ -74,8 +73,8 @@ src_install() {
 		fperms 0440 "${f#${ED}}"
 	done
 	# couchdb needs to write to local.ini on first start
-	fowners couchdb:couchdb "${ED}/opt/couchdb/etc/local.ini"
-	fowners 0640 "${ED}/opt/couchdb/etc/local.ini"
+	fowners couchdb:couchdb "/opt/couchdb/etc/local.ini"
+	fowners 0640 "/opt/couchdb/etc/local.ini"
 
 	insinto /opt/couchdb/etc/default.d
 	insopts -m0640 -oroot -gcouchdb
