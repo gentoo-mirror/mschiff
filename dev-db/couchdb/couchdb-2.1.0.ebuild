@@ -42,7 +42,6 @@ pkg_setup() {
 src_configure() {
 	econf \
 		--with-erlang="${EPREFIX}"/usr/$(get_libdir)/erlang/usr/include \
-		--with-js-lib="${EPREFIX}"/usr/$(get_libdir) \
 		--with-curl \
 		--user=couchdb
 }
