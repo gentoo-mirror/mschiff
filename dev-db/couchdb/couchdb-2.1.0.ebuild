@@ -56,8 +56,8 @@ src_test() {
 
 src_install() {
 	mkdir -p "${D}/{etc,opt}"
-	cp -a "${S}/rel/couchdb" "${D}/opt/"
-	mv "${D}/opt/couchdb/etc" "${D}/etc/"
+	mv "${S}/rel/couchdb/etc" "${D}/etc/couchdb"
+	mv "${S}/rel/couchdb" "${D}/opt/"
 	dosym ../../etc/couchdb /opt/couchdb/etc
 
 	keepdir /var/l{ib,og}/couchdb
