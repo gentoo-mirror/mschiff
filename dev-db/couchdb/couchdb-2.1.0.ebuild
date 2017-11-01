@@ -74,7 +74,7 @@ src_install() {
 	done
 	# couchdb needs to write to local.ini on first start
 	fowners couchdb:couchdb "/opt/couchdb/etc/local.ini"
-	fowners 0640 "/opt/couchdb/etc/local.ini"
+	fperms  0640 "/opt/couchdb/etc/local.ini"
 
 	insinto /opt/couchdb/etc/default.d
 	insopts -m0640 -oroot -gcouchdb
