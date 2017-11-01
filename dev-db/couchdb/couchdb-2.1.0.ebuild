@@ -73,6 +73,10 @@ src_install() {
 		fowners root:couchdb "${f#${ED}}"
 		fperms 0440 "${f#${ED}}"
 	done
+	# couchdb needs to write to local.ini on first start
+	fowners couchdb:couchdb "${ED}/opt/couchdb/etc/local.ini"
+	fowners 0640 "${ED}/opt/couchdb/etc/local.ini"
+
 	insinto /opt/couchdb/etc/default.d
 	insopts -m0640 -oroot -gcouchdb
 	doins "${FILESDIR}/10_gentoo.ini"
@@ -86,6 +90,6 @@ src_install() {
 	rm "${ED}/opt/couchdb/bin/couchdb.cmd"
 
 	# bug 442616
-	pax-mark mr "/opt/couchdb/bin/couchjs"
-	pax-mark mr "/opt/couchdb/lib/couch-${PV}/priv/couchjs"
+	pax-mark mr "${D}/opt/couchdb/bin/couchjs"
+	pax-mark mr "${D}/opt/couchdb/lib/couch-${PV}/priv/couchjs"
 }
