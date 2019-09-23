@@ -1,0 +1,29 @@
+#!/sbin/runscript
+# By eroen, 2014
+#
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+
+### These are default values for /etc/init.d/isso .
+
+# If you wish to run several instances, you might prefer to create a symlink to
+# the isso init script named isso.<instancename> in /etc/init.d/ and copy the
+# configuration file to /etc/isso.<instancename>.conf .
+#ISSO_CONF="/etc/isso.conf"
+#ISSO_LOG="/var/log/isso.log"
+#ISSO_USER="isso:isso"
+
+### End of default values.
+
+
+# If your isso instance needs to be accessible or can only reach your website
+# over the network, you should ensure a network interface is up when it is
+# started.
+#rc_need=${rc_need} net.eth0
+
+# If your website is hosted on the same box the isso instance runs on, you need
+# to ensure the webserver is up before isso is started.
+#rc_need=${rc_need} lighttpd
+
+# vim: ft=gentoo-conf-d
