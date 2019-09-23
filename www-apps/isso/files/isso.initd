@@ -1,0 +1,33 @@
+#!/sbin/openrc-run
+# By eroen, 2014
+#
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+
+ISSO_CONF=${ISSO_CONF:-"/etc/${RC_SVCNAME}.conf"}
+ISSO_LOG=${ISSO_LOG:-"/var/log/${RC_SVCNAME}.log"}
+ISSO_USER=${ISSO_USER:-"${RC_SVCNAME%%.*}:${RC_SVCNAME%%.*}"}
+
+description="lightweight Disqus alternative"
+start_stop_daemon_args="--user ${ISSO_USER} --stderr ${ISSO_LOG}"
+command=/usr/bin/${RC_SVCNAME%%.*}
+command_args="-c ${ISSO_CONF} run"
+command_background=true
+pidfile="/var/run/${RC_SVCNAME}.pid"
+required_files="${ISSO_CONF}"
+
+depend() {
+	need localmount
+	after bootmisc
+
+	use mta
+	after net apache lighttpd nginx
+}
+
+start_pre() {
+	checkpath -f -o "${ISSO_USER}" "${ISSO_LOG}"
+	checkpath -W "${ISSO_LOG}"
+}
+
+# vim: set ft=gentoo-init-d
