@@ -47,6 +47,8 @@ LIBDEPEND="dev-python/html5lib[${PYTHON_USEDEP}]
 	dev-python/itsdangerous[${PYTHON_USEDEP}]
 	>=dev-python/misaka-2.0[${PYTHON_USEDEP}]
 	<dev-python/misaka-3.0[${PYTHON_USEDEP}]
+	dev-python/ipaddr[${PYTHON_USEDEP}]
+	dev-python/bleach[${PYTHON_USEDEP}]
 	"
 HDEPEND="dev-python/setuptools[${PYTHON_USEDEP}]"
 if [[ ${PV} == *9999* ]]; then
