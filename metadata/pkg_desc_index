@@ -5,4 +5,4 @@ dev-python/misaka 2.1.0-r1: The Python binding for Sundown, a markdown parsing l
 net-analyzer/zabbix 2.4.8: ZABBIX is software for monitoring of your applications, network and servers
 net-misc/dnssec-trigger 9999: A tool to configure unbound with usable DNSSEC servers.
 sys-fs/lvm2 2.02.166-r1: User-land utilities for LVM2 (device-mapper) software
-www-apps/isso 0.12.2 9999: lightweight Disqus alternative
+www-apps/isso 0.12.2-r1 9999: lightweight Disqus alternative
