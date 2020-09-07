@@ -15,7 +15,7 @@ EAPI=5
 # dev-python/werkzeug					-34
 # dev-python/configparser	-26
 # dev-python/ipaddr			-26
-PYTHON_COMPAT=( python2_7 )
+PYTHON_COMPAT=( python3_{7,8} )
 
 if [[ $PV == *9999* ]]; then
 	inherit user distutils-r1 git-r3
@@ -34,7 +34,7 @@ HOMEPAGE="http://posativ.org/isso/ https://pypi.python.org/pypi/isso/ https://gi
 # BSD: pbkdf2.js sha1.js crypto.py?
 LICENSE="MIT BSD"
 SLOT="0"
-KEYWORDS=""
+KEYWORDS="~amd64"
 IUSE=""
 if [[ ${PV} == *9999* ]]; then
 	IUSE+=" debug doc test"
@@ -47,12 +47,7 @@ LIBDEPEND="dev-python/html5lib[${PYTHON_USEDEP}]
 	dev-python/itsdangerous[${PYTHON_USEDEP}]
 	>=dev-python/misaka-2.0[${PYTHON_USEDEP}]
 	<dev-python/misaka-3.0[${PYTHON_USEDEP}]
-	$(python_gen_cond_dep \
-		"dev-python/configparser[$(python_gen_usedep 'python2*')]
-		>=dev-python/ipaddr-2.1[$(python_gen_usedep 'python2*')]
-		>=dev-python/werkzeug-0.8[$(python_gen_usedep 'python2*')]
-		dev-python/bleach[$(python_gen_usedep 'python2*')]" \
-		'python2*')"
+	"
 HDEPEND="dev-python/setuptools[${PYTHON_USEDEP}]"
 if [[ ${PV} == *9999* ]]; then
 	HDEPEND+=" ${VCS_DEPEND}
