@@ -1,6 +1,2 @@
-app-admin/restart_services 0.9.6: Utility to manage OpenRC services that need to be restarted
-app-pda/gcaldaemon 1.0_beta16: Offers two-way synchronization between Google Calendar and other iCal compatible calendar apps
 dev-db/couchdb 2.1.0: Distributed, fault-tolerant and schema-free document-oriented database
-net-analyzer/zabbix 2.4.8: ZABBIX is software for monitoring of your applications, network and servers
-net-misc/dnssec-trigger 9999: A tool to configure unbound with usable DNSSEC servers.
-sys-fs/lvm2 2.02.166-r1: User-land utilities for LVM2 (device-mapper) software
+www-apps/isso 0.12.5 9999: lightweight Disqus alternative

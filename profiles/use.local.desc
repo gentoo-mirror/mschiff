@@ -2,23 +2,3 @@
 # Please add your descriptions to your package's metadata.xml ONLY.
 # * generated automatically using pmaint *
 
-net-analyzer/zabbix:agent - Enable zabbix agent (for to-be-monitored machines)
-net-analyzer/zabbix:frontend - Enable zabbix web frontend
-net-analyzer/zabbix:ipv6 - Turn on support of IPv6
-net-analyzer/zabbix:java - Enable Zabbix Java JMX Management Gateway
-net-analyzer/zabbix:libxml2 - Use libxml2 client library
-net-analyzer/zabbix:odbc - Enable Database Monitor and use UnixODBC Library by default
-net-analyzer/zabbix:openipmi - Enable openipmi things
-net-analyzer/zabbix:proxy - Enable proxy support
-net-analyzer/zabbix:server - Enable zabbix server
-net-analyzer/zabbix:ssh - SSH v2 based checks
-net-analyzer/zabbix:static - Build statically linked binaries
-sys-fs/lvm2:clvm - Allow users to build clustered lvm2
-sys-fs/lvm2:cman - Cman support for clustered lvm
-sys-fs/lvm2:corosync - Corosync support for clustered lvm
-sys-fs/lvm2:device-mapper-only - Build only device-mapper and not the rest of LVM2 (UNSUPPORTED)
-sys-fs/lvm2:lvm1 - Allow users to build lvm2 with lvm1 support
-sys-fs/lvm2:lvm2create_initrd - Install lvm2create_initrd script and pull in sys-apps/makedev for the /sbin/MAKEDEV command
-sys-fs/lvm2:openais - Openais support for clustered lvm
-sys-fs/lvm2:sanlock - Enable lvmlockd with support for sanlock
-sys-fs/lvm2:thin - Support for thin volumes
