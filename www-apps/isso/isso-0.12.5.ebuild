@@ -1,12 +1,7 @@
-# By eroen, 2014
-#
-# Permission to use, copy, modify, and/or distribute this software for any
-# purpose with or without fee is hereby granted, provided that the above
-# copyright notice and this permission notice appear in all copies.
-#
-# $Header: $
+# Copyright 2014-2021 mschiff, eroen
 
-EAPI=5
+EAPI=6
+
 # setup.py disallows 30 31 32
 # setup.py documents support 26	 27  33
 # dev-python/html5lib					-34
@@ -88,9 +83,9 @@ src_unpack() {
 			unset ${PN}_LIVE_REPO;
 			EGIT_CHECKOUT_DIR=${WORKDIR}/${EGIT_REPO_URI##*/} git-r3_src_unpack
 		); done
-		mkdir -p "${S}"/isso/js/components/{requirejs-text,almond} || die
-		cp "${WORKDIR}"/text.git/text.js "${S}"/isso/js/components/requirejs-text/ || die
-		cp "${WORKDIR}"/almond.git/almond.js "${S}"/isso/js/components/almond/ || die
+		mkdir -p "${S}"/isso/js/components/{requirejs-text,almond}
+		cp "${WORKDIR}"/text.git/text.js "${S}"/isso/js/components/requirejs-text/
+		cp "${WORKDIR}"/almond.git/almond.js "${S}"/isso/js/components/almond/
 	else
 		default
 	fi
@@ -100,19 +95,19 @@ src_compile() {
 	if [[ ${PV} == *9999* ]]; then
 		# build r.js
 		pushd "${WORKDIR}"/r.js.git 2>/dev/null
-		node dist.js || die
+		node dist.js
 		popd 2>/dev/null
 		local RJS=${WORKDIR}/r.js.git/r.js
 
 		# generate css
-		scss isso/css/isso.scss isso/css/isso.css || die
+		scss isso/css/isso.scss isso/css/isso.css
 
 		# generate js using r.js
-		node "${RJS}" -o isso/js/build.embed.js || die
-		node "${RJS}" -o isso/js/build.count.js || die
+		node "${RJS}" -o isso/js/build.embed.js
+		node "${RJS}" -o isso/js/build.count.js
 		if use debug; then
-			node "${RJS}" -o isso/js/build.embed.js optimize="none" out="isso/js/embed.dev.js" || die
-			node "${RJS}" -o isso/js/build.count.js optimize="none" out="isso/js/count.dev.js" || die
+			node "${RJS}" -o isso/js/build.embed.js optimize="none" out="isso/js/embed.dev.js"
+			node "${RJS}" -o isso/js/build.count.js optimize="none" out="isso/js/count.dev.js"
 		fi
 	fi
 	distutils-r1_src_compile
@@ -121,12 +116,12 @@ src_compile() {
 python_compile_all() {
 	if [[ ${PV} == *9999* ]]; then
 		if use doc; then
-			mkdir -p "${T}"/html || die
-			pushd docs 2>/dev/null || die
-			sphinx-build -E -b dirhtml -a . "${T}"/html || die
-			popd 2>/dev/null || die
-			mkdir -p "${T}"/html/_static/css || die
-			scss docs/_static/css/site.scss "${T}"/html/_static/css/site.css || die
+			mkdir -p "${T}"/html
+			pushd docs 2>/dev/null
+			sphinx-build -E -b dirhtml -a . "${T}"/html
+			popd 2>/dev/null
+			mkdir -p "${T}"/html/_static/css
+			scss docs/_static/css/site.scss "${T}"/html/_static/css/site.css
 		fi
 	fi
 }
@@ -136,12 +131,10 @@ python_test() {
 		# doctests fail, require https://github.com/gnublade/doctest-ignore-unicode
 		nosetests \
 			--with-coverage --cover-package=isso \
-			isso/ specs/ \
-			|| die "tests failed"
+			isso/ specs/
 		#nosetests --with-doctest --with-doctest-ignore-unicode \
 		#	--with-coverage --cover-package=isso \
-		#	isso/ specs/ \
-		#	|| die "tests failed"
+		#	isso/ specs/
 	fi
 }
 
