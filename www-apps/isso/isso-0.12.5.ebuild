@@ -10,7 +10,7 @@ EAPI=6
 # dev-python/werkzeug					-34
 # dev-python/configparser	-26
 # dev-python/ipaddr			-26
-PYTHON_COMPAT=( python3_{7,8} )
+PYTHON_COMPAT=( python3_{9,10} )
 
 if [[ $PV == *9999* ]]; then
 	inherit user distutils-r1 git-r3
