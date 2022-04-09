@@ -10,17 +10,18 @@ EAPI=6
 # dev-python/werkzeug					-34
 # dev-python/configparser	-26
 # dev-python/ipaddr			-26
-PYTHON_COMPAT=( python3_{9,10} )
+PYTHON_COMPAT=( python3_9 )
+
+inherit user distutils-r1
 
 if [[ $PV == *9999* ]]; then
-	inherit user distutils-r1 git-r3
+	inherit git-r3
 	EGIT_REPO_URI=https://github.com/posativ/${PN}.git
 	JS_REPO_URIS=( https://github.com/jrburke/almond.git
 		https://github.com/jrburke/r.js.git
 		https://github.com/requirejs/text.git )
 	VCS_DEPEND="dev-vcs/git[curl]"
 else
-	inherit user distutils-r1
 	SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
 fi
 
