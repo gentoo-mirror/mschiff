@@ -1,6 +1,6 @@
 # Copyright 2014-2021 mschiff, eroen
 
-EAPI=6
+EAPI=7
 
 # setup.py disallows 30 31 32
 # setup.py documents support 26	 27  33
@@ -10,9 +10,10 @@ EAPI=6
 # dev-python/werkzeug					-34
 # dev-python/configparser	-26
 # dev-python/ipaddr			-26
-PYTHON_COMPAT=( python3_9 )
+PYTHON_COMPAT=( python3_{9..10} )
+DISTUTILS_USE_PEP517=setuptools
 
-inherit user distutils-r1
+inherit distutils-r1
 
 if [[ $PV == *9999* ]]; then
 	inherit git-r3
@@ -22,7 +23,7 @@ if [[ $PV == *9999* ]]; then
 		https://github.com/requirejs/text.git )
 	VCS_DEPEND="dev-vcs/git[curl]"
 else
-	SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
+	inherit pypi
 fi
 
 DESCRIPTION="lightweight Disqus alternative"
@@ -39,31 +40,35 @@ else
 	DOCS=( )
 fi
 
-LIBDEPEND="dev-python/html5lib[${PYTHON_USEDEP}]
+LIBDEPEND="
+	dev-python/html5lib[${PYTHON_USEDEP}]
 	dev-python/itsdangerous[${PYTHON_USEDEP}]
-	>=dev-python/misaka-2.0[${PYTHON_USEDEP}]
-	<dev-python/misaka-3.0[${PYTHON_USEDEP}]
-	dev-python/ipaddr[${PYTHON_USEDEP}]
+	dev-python/misaka[${PYTHON_USEDEP}]
 	dev-python/bleach[${PYTHON_USEDEP}]
+	dev-python/cffi[${PYTHON_USEDEP}]
+	dev-python/flask[${PYTHON_USEDEP}]
+	dev-python/ipaddr[${PYTHON_USEDEP}]
+	dev-python/jinja[${PYTHON_USEDEP}]
+	dev-python/werkzeug[${PYTHON_USEDEP}]
 	"
-HDEPEND="dev-python/setuptools[${PYTHON_USEDEP}]"
+
+HDEP="dev-python/setuptools[${PYTHON_USEDEP}]"
 if [[ ${PV} == *9999* ]]; then
-	HDEPEND+=" ${VCS_DEPEND}
+	HDEP+=" ${VCS_DEPEND}
 		dev-ruby/sass
 		net-libs/nodejs
 		doc? ( dev-python/sphinx )"
 fi
-DEPEND="${HDEPEND}"
+DEPEND="${HDEP}"
 if [[ ${PV} == *9999* ]]; then
 	DEPEND+=" test? ( dev-python/nose[${PYTHON_USEDEP}]
 		${LIBDEPEND} )"
 fi
 RDEPEND="dev-python/setuptools[${PYTHON_USEDEP}]
+	dev-db/sqlite
+	acct-user/${PN}
+	acct-group/${PN}
 	${LIBDEPEND}"
-
-pkg_setup() {
-	enewuser ${PN}
-}
 
 src_fetch() {
 	if [[ ${PV} == *9999* ]]; then
@@ -143,7 +148,7 @@ python_install_all() {
 	distutils-r1_python_install_all
 
 	insinto /etc
-	doins share/${PN}.conf
+	#doins share/${PN}.conf
 	if [[ ${PV} == *9999* ]]; then
 		use doc && dodoc -r "${T}"/html
 	fi
