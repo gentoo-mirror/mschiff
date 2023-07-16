@@ -17,7 +17,7 @@ IUSE=""
 RESTRICT="mirror splitdebug"
 
 DEPEND=""
-RDEPEND=""
+RDEPEND=">=dev-libs/openssl-3"
 BDEPEND="app-arch/unzip"
 
 QA_PREBUILT="*"
