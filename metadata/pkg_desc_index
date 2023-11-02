@@ -1,5 +1,5 @@
 acct-group/isso 0-r1: Group for isso
 acct-user/isso 0-r1: User for isso
 app-backup/bareos 22.0.3-r1: Featureful client/server network backup suite
-app-editors/logseq-desktop-bin 0.9.19: A privacy-first, open-source platform for knowledge sharing and management.
+app-editors/logseq-desktop-bin 0.9.19 0.9.20: A privacy-first, open-source platform for knowledge sharing and management.
 www-apps/isso 0.13.0: lightweight Disqus alternative
