@@ -1,3 +1,4 @@
 acct-group/isso 0-r1: Group for isso
 acct-user/isso 0-r1: User for isso
 app-backup/bareos 22.0.3-r1: Featureful client/server network backup suite
+www-apps/isso 0.13.0: lightweight Disqus alternative
