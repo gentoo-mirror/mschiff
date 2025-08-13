@@ -1,6 +1,6 @@
 # Copyright 2014-2021 mschiff, eroen
 
-EAPI=7
+EAPI=8
 
 # setup.py disallows 30 31 32
 # setup.py documents support 26	 27  33
@@ -10,7 +10,7 @@ EAPI=7
 # dev-python/werkzeug					-34
 # dev-python/configparser	-26
 # dev-python/ipaddr			-26
-PYTHON_COMPAT=( python3_{9..10} )
+PYTHON_COMPAT=( python3_{9..14} )
 DISTUTILS_USE_PEP517=setuptools
 
 inherit distutils-r1
@@ -32,7 +32,6 @@ HOMEPAGE="http://posativ.org/isso/ https://pypi.python.org/pypi/isso/ https://gi
 LICENSE="MIT BSD"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE=""
 if [[ ${PV} == *9999* ]]; then
 	IUSE+=" debug doc test"
 	DOCS=( README.md CHANGES.rst docs/{contribute.rst,faq.rst} )
@@ -40,15 +39,17 @@ else
 	DOCS=( )
 fi
 
+# missing:
+#	dev-python/misaka[${PYTHON_USEDEP}]
+#	dev-python/ipaddr[${PYTHON_USEDEP}]
+
 LIBDEPEND="
 	dev-python/html5lib[${PYTHON_USEDEP}]
 	dev-python/itsdangerous[${PYTHON_USEDEP}]
-	dev-python/misaka[${PYTHON_USEDEP}]
 	dev-python/bleach[${PYTHON_USEDEP}]
 	dev-python/cffi[${PYTHON_USEDEP}]
 	dev-python/flask[${PYTHON_USEDEP}]
-	dev-python/ipaddr[${PYTHON_USEDEP}]
-	dev-python/jinja[${PYTHON_USEDEP}]
+	dev-python/jinja2[${PYTHON_USEDEP}]
 	dev-python/werkzeug[${PYTHON_USEDEP}]
 	"
 
